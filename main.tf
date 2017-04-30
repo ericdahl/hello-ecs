@@ -171,7 +171,6 @@ data "template_file" "task_definition" {
   template = "${file("${path.module}/task-definition.json")}"
 
   vars {
-//    image_url        = "ghost:latest"
     image_url = "nginx:latest"
     container_name   = "nginx"
     log_group_region = "${var.aws_region}"
@@ -179,15 +178,15 @@ data "template_file" "task_definition" {
   }
 }
 
-resource "aws_ecs_task_definition" "ghost" {
-  family                = "tf_example_ghost_td"
+resource "aws_ecs_task_definition" "nginx" {
+  family                = "tf_example_nginx_td"
   container_definitions = "${data.template_file.task_definition.rendered}"
 }
 
 resource "aws_ecs_service" "test" {
-  name            = "tf-example-ecs-ghost"
+  name            = "tf-example-ecs-nginx"
   cluster         = "${aws_ecs_cluster.main.id}"
-  task_definition = "${aws_ecs_task_definition.ghost.arn}"
+  task_definition = "${aws_ecs_task_definition.nginx.arn}"
   desired_count   = 1
   iam_role        = "${aws_iam_role.ecs_service.name}"
 
@@ -293,7 +292,7 @@ resource "aws_iam_role_policy" "instance" {
 ## ALB
 
 resource "aws_alb_target_group" "test" {
-  name     = "tf-example-ecs-ghost"
+  name     = "tf-example-ecs-nginx"
   port     = 80
   protocol = "HTTP"
   vpc_id   = "${aws_vpc.main.id}"
@@ -323,5 +322,5 @@ resource "aws_cloudwatch_log_group" "ecs" {
 }
 
 resource "aws_cloudwatch_log_group" "app" {
-  name = "tf-ecs-group/app-ghost"
+  name = "tf-ecs-group/app-nginx"
 }
