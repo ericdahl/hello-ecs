@@ -150,7 +150,7 @@ resource "aws_ecs_service" "test" {
   name            = "tf-example-ecs-nginx"
   cluster         = "${aws_ecs_cluster.main.id}"
   task_definition = "${aws_ecs_task_definition.nginx.arn}"
-  desired_count   = 1
+  desired_count   = 3
   iam_role        = "${aws_iam_role.ecs_service.name}"
 
   load_balancer {
