@@ -1,11 +1,6 @@
-# Specify the provider and access details
 provider "aws" {
   region = "${var.aws_region}"
 }
-
-## EC2
-
-### Network
 
 data "aws_availability_zones" "available" {}
 
@@ -73,8 +68,6 @@ EOF
     create_before_destroy = true
   }
 }
-
-### Security
 
 resource "aws_security_group" "lb_sg" {
   description = "controls access to the application ELB"
@@ -173,8 +166,6 @@ resource "aws_ecs_service" "test" {
     "aws_alb_listener.front_end",
   ]
 }
-
-## IAM
 
 resource "aws_iam_role" "ecs_service" {
   name = "tf_example_ecs_role"
@@ -286,8 +277,6 @@ resource "aws_alb_listener" "front_end" {
     type             = "forward"
   }
 }
-
-## CloudWatch Logs
 
 resource "aws_cloudwatch_log_group" "ecs" {
   name = "tf-ecs-group/ecs-agent"
