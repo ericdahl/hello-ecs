@@ -109,9 +109,9 @@ resource "aws_security_group" "instance_sg" {
   }
 
   ingress {
-    protocol  = "tcp"
-    from_port = 80
-    to_port   = 80
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
 
     security_groups = [
       "${aws_security_group.lb_sg.id}",
@@ -125,8 +125,6 @@ resource "aws_security_group" "instance_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
-
-## ECS
 
 resource "aws_ecs_cluster" "main" {
   name = "terraform_example_ecs_cluster"
