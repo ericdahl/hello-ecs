@@ -75,7 +75,6 @@ data "template_file" "instance_profile" {
 
   vars {
     app_log_group_arn = "${aws_cloudwatch_log_group.app.arn}"
-    ecs_log_group_arn = "${aws_cloudwatch_log_group.ecs.arn}"
   }
 }
 
