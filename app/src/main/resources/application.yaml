@@ -1,0 +1,15 @@
+management:
+  security:
+    enabled: false
+
+
+#spring.datasource.url: jdbc:postgresql://104.198.98.204/test
+#spring.datasource.username: postgres
+##spring.datasource.password: pw
+#spring.datasource.driver-class-name: org.postgresql.Driver
+
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
