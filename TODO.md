@@ -1,2 +1,3 @@
-- `Error connecting to TCS: {"AccessDeniedException":"Forbidden"}, websocket: bad handshake`
 - deploy pipeline (jenkins?)
+- other service (redis?)
+- test deploy strategies
