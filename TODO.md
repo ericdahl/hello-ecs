@@ -1,0 +1,2 @@
+- `Error connecting to TCS: {"AccessDeniedException":"Forbidden"}, websocket: bad handshake`
+- deploy pipeline (jenkins?)
