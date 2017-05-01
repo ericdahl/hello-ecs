@@ -1,6 +1,13 @@
+C = `date "+%Y%m%d"`-`git rev-parse --short HEAD`
+
 build:
-	mvn clean package
-	docker build -t hello-ecs:latest -t 689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:latest .
+	mvn package
+	docker build -t hello-ecs:$(C) .
+	docker tag hello-ecs:$(C) hello-ecs:latest
+	docker tag hello-ecs:$(C) 689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:$(C)
 
 deploy: build
-	docker push 689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:latest
+	docker push 689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:$(C)
+
+test:
+	echo $(C)

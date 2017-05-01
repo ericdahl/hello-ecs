@@ -7,7 +7,7 @@ data "template_file" "task_definition" {
 
   vars {
 //    image_url = "nginx:latest"
-    image_url = "689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:latest"
+    image_url = "689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:20170501-e3c6193"
     container_name   = "nginx"
     log_group_region = "${var.aws_region}"
     log_group_name   = "${aws_cloudwatch_log_group.app.name}"
