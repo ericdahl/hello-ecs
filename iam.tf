@@ -83,3 +83,9 @@ resource "aws_iam_role_policy" "instance" {
   role   = "${aws_iam_role.app_instance.name}"
   policy = "${data.template_file.instance_profile.rendered}"
 }
+
+resource "aws_iam_policy_attachment" "proxy" {
+    name = "TfEcsExampleInstanceRoleAttachment"
+  roles   = ["${aws_iam_role.app_instance.name}"]
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+}
