@@ -2,11 +2,11 @@
   {
     "essential": true,
     "image": "${image_url}",
-    "memory": 64,
+    "memory": 512,
     "name": "${container_name}",
     "portMappings": [
       {
-        "containerPort": 80,
+        "containerPort": 8080,
         "hostPort": 0
       }
     ],

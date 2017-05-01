@@ -1,6 +1,6 @@
 build:
 	mvn clean install
-	docker build --tag 'hello-ecs-app:latest' --tag 'gcr.io/striped-weaver-161318/hello-k8s-app' .
+	docker build -t hello-ecs:latest -t 689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:latest .
 
 deploy: build
-	gcloud docker -- push gcr.io/striped-weaver-161318/hello-ecs-app
+	docker push 689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:latest

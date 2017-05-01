@@ -1,3 +1,5 @@
 - deploy pipeline (jenkins?)
 - other service (redis?)
 - test deploy strategies
+- tag image with git commit
+- configure elb health monitor times
