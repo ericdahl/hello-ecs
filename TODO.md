@@ -1,7 +1,7 @@
 - deploy pipeline (jenkins?)
 - other service (redis?)
 - test deploy strategies
-- tag image with git commit
+- update makefile docker build to show the tag more clearly
 - configure elb health monitor times
 - smaller docker image
 - consolidate variables

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AppController {
 
-    @Value("${HOSTNAME}")
+    @Value("${HOSTNAME:unknown}")
     private String hostname;
 
     @GetMapping(produces = MediaType.TEXT_PLAIN_VALUE)
