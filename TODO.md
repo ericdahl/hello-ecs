@@ -1,3 +1,5 @@
+- monitoring
+    - ecs-agent logs to cloudwatch
 - deploy pipeline (jenkins?)
 - other service (redis?)
 - test deploy strategies
