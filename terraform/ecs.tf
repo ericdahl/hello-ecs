@@ -3,7 +3,7 @@ resource "aws_ecs_cluster" "main" {
 }
 
 data "template_file" "task_definition" {
-  template = "${file("${path.module}/task-definition.json")}"
+  template = "${file("${path.module}/templates/tasks/app.json")}"
 
   vars {
 //    image_url = "nginx:latest"

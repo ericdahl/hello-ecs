@@ -71,7 +71,7 @@ EOF
 
 
 data "template_file" "instance_profile" {
-  template = "${file("${path.module}/instance-profile-policy.json")}"
+  template = "${file("${path.module}/templates/instance-profile-policy.json")}"
 
   vars {
     app_log_group_arn = "${aws_cloudwatch_log_group.app.arn}"
