@@ -1,4 +1,4 @@
-C = `date "+%Y%m%d"`-`git rev-parse --short HEAD`
+C = `date "+%Y%m%d-%H%M"`-`git rev-parse --short HEAD`
 
 compile:
 	mvn package
