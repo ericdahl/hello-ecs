@@ -17,3 +17,7 @@ output "elb_hostname" {
 output "vpc_subnets" {
   value = ["${aws_subnet.main.*.cidr_block}"]
 }
+
+output "elasticache_node" {
+  value = ["${aws_elasticache_cluster.default.cache_nodes.0.address}"]
+}
