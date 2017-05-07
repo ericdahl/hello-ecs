@@ -10,8 +10,7 @@ resource "aws_elasticache_cluster" "default" {
 
 resource "aws_elasticache_subnet_group" "default" {
   name       = "tf-test-cache-subnet"
-  subnet_ids = ["subnet-83caa7ca"] // FIXME
-//  subnet_ids = ["${aws_subnet.main.id}"]
+  subnet_ids = ["${aws_subnet.main.*.id}"]
 }
 
 resource "aws_security_group" "elasticache_sg" {
