@@ -10,7 +10,8 @@ data "template_file" "task_definition" {
     container_name   = "nginx"
     log_group_region = "${var.aws_region}"
     log_group_name   = "${aws_cloudwatch_log_group.app.name}"
-    redis_host       = "${aws_elasticache_cluster.default.cache_nodes.0.address}"
+//    redis_host       = "${aws_elasticache_cluster.default.cache_nodes.0.address}"
+    redis_host       = "localhost"
   }
 }
 

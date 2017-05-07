@@ -7,3 +7,5 @@
 - smaller docker image
 - consolidate variables
     - ECR URL
+- ability to toggle redis
+    - workaround issue of undefined var for ecs env var when disabled
