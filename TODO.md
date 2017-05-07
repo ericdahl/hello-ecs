@@ -1,7 +1,7 @@
 - monitoring
     - ecs-agent logs to cloudwatch
 - deploy pipeline (jenkins?)
-- other service (redis?)
+- other ecs service (?)
 - test deploy strategies
 - update makefile docker build to show the tag more clearly
 - configure elb health monitor times

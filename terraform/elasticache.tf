@@ -1,4 +1,5 @@
 resource "aws_elasticache_cluster" "default" {
+  count                = "${var.redis_cluster_count}"
   cluster_id           = "tf-example-cluster"
   engine               = "redis"
   node_type            = "cache.t2.micro"
@@ -9,11 +10,13 @@ resource "aws_elasticache_cluster" "default" {
 }
 
 resource "aws_elasticache_subnet_group" "default" {
+  count      = "${var.redis_cluster_count}"
   name       = "tf-test-cache-subnet"
   subnet_ids = ["${aws_subnet.main.*.id}"]
 }
 
 resource "aws_security_group" "elasticache_sg" {
+  count       = "${var.redis_cluster_count}"
   description = "allow redis from instances"
   vpc_id      = "${aws_vpc.main.id}"
   name        = "elasticache_sg"
