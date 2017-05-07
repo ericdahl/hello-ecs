@@ -13,3 +13,7 @@ output "asg_name" {
 output "elb_hostname" {
   value = "${aws_alb.main.dns_name}"
 }
+
+output "vpc_subnets" {
+  value = ["${aws_subnet.main.*.cidr_block}"]
+}
