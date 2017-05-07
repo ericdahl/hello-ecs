@@ -3,7 +3,6 @@
 - deploy pipeline (jenkins?)
 - other ecs service (?)
 - test deploy strategies
-- update makefile docker build to show the tag more clearly
 - configure elb health monitor times
 - smaller docker image
 - consolidate variables
