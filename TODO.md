@@ -1,4 +1,3 @@
-- redis URL discovery
 - monitoring
     - ecs-agent logs to cloudwatch
 - deploy pipeline (jenkins?)

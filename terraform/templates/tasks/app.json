@@ -10,6 +10,9 @@
         "hostPort": 0
       }
     ],
+    "environment" : [
+      { "name" : "SPRING_REDIS_HOST", "value" : "${redis_host}" }
+    ],
     "logConfiguration": {
         "logDriver": "awslogs",
         "options": {

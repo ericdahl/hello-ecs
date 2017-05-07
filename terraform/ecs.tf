@@ -6,11 +6,11 @@ data "template_file" "task_definition" {
   template = "${file("${path.module}/templates/tasks/app.json")}"
 
   vars {
-//    image_url = "nginx:latest"
-    image_url = "689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:20170504-1822-6f158e3"
+    image_url = "689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:20170507-1954-9c3eb5b"
     container_name   = "nginx"
     log_group_region = "${var.aws_region}"
     log_group_name   = "${aws_cloudwatch_log_group.app.name}"
+    redis_host       = "${aws_elasticache_cluster.default.cache_nodes.0.address}"
   }
 }
 
