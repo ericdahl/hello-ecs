@@ -2,17 +2,6 @@ management:
   security:
     enabled: false
 
-
-#spring.datasource.url: jdbc:postgresql://104.198.98.204/test
-#spring.datasource.username: postgres
-##spring.datasource.password: pw
-#spring.datasource.driver-class-name: org.postgresql.Driver
-
-spring.redis:
-  host: tf-example-cluster.sujejl.0001.usw2.cache.amazonaws.com
-#  host: localhost
-
-
 spring:
   jpa:
     hibernate:
