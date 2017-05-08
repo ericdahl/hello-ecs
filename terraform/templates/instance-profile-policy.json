@@ -26,6 +26,16 @@
       "Resource": [
         "${app_log_group_arn}"
       ]
+    },
+    {
+      "Sid": "allowSubmittingMetricsToCloudWatch",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:PutMetricData"
+      ],
+      "Resource": [
+        "${app_log_group_arn}"
+      ]
     }
   ]
 }

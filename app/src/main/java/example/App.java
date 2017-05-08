@@ -1,6 +1,11 @@
 package example;
 
 import ch.qos.logback.access.jetty.RequestLogImpl;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.services.cloudwatch.AmazonCloudWatchAsyncClient;
+import com.blacklocus.metrics.CloudWatchReporter;
+import com.blacklocus.metrics.CloudWatchReporterBuilder;
+import com.codahale.metrics.MetricRegistry;
 import example.dao.NumberRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -10,6 +15,8 @@ import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletConta
 import org.springframework.boot.context.embedded.jetty.JettyServerCustomizer;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.context.annotation.Bean;
+
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @EnableHystrix
@@ -39,5 +46,22 @@ public class App {
         return (args) -> {
             repository.save(new example.dao.Number(2, true));
         };
+    }
+
+    @Bean
+    public CloudWatchReporter cloudWatchReporter(MetricRegistry metricRegistry) {
+        final AmazonCloudWatchAsyncClient client = new AmazonCloudWatchAsyncClient(new DefaultAWSCredentialsProviderChain());
+
+        // FIXME
+        client.setEndpoint("https://monitoring.us-west-2.amazonaws.com");
+
+        final CloudWatchReporter cloudWatchReporter = new CloudWatchReporterBuilder()
+                .withRegistry(metricRegistry)
+                .withNamespace("hello_ecs")
+                .withClient(client)
+                .build();
+
+        cloudWatchReporter.start(1, TimeUnit.MINUTES);
+        return cloudWatchReporter;
     }
 }

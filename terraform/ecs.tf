@@ -6,7 +6,7 @@ data "template_file" "task_definition" {
   template = "${file("${path.module}/templates/tasks/app.json")}"
 
   vars {
-    image_url = "689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:20170507-1954-9c3eb5b"
+    image_url = "689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:20170508-0405-c7d56e7"
     container_name   = "nginx"
     log_group_region = "${var.aws_region}"
     log_group_name   = "${aws_cloudwatch_log_group.app.name}"
