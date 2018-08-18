@@ -5,7 +5,9 @@ Demo using
     - ECS
     - ALB
     - CloudWatch logs via docker plugin
-- spring-boot
+    - ElastiCache redis
+- spring-boot web app
+    - connected to ElastiCache
 
 It also creates the base infrastructure (VPC, IAM) so that it's completely self contained. If you
 already have these things, you could remove that config.
