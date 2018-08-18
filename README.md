@@ -7,8 +7,9 @@ Demo using
     - CloudWatch logs via docker plugin
 - spring-boot
 
-
-See https://github.com/ericdahl/tf-ecs for more comprehensive ECS customization, including:
+This is a **basic example**. If you're interested in more comprehensive ECS customization, including:
 - spot instances
 - automatic draining of containers
 - autoscaling
+
+See https://github.com/ericdahl/tf-ecs
