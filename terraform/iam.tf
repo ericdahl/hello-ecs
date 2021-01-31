@@ -16,11 +16,12 @@ resource "aws_iam_role" "ecs_service" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_role_policy" "ecs_service" {
   name = "tf_example_ecs_policy"
-  role = "${aws_iam_role.ecs_service.name}"
+  role = aws_iam_role.ecs_service.name
 
   policy = <<EOF
 {
@@ -41,11 +42,12 @@ resource "aws_iam_role_policy" "ecs_service" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_instance_profile" "app" {
-  name  = "tf-ecs-instprofile"
-  role = "${aws_iam_role.app_instance.name}"
+  name = "tf-ecs-instprofile"
+  role = aws_iam_role.app_instance.name
 }
 
 resource "aws_iam_role" "app_instance" {
@@ -66,26 +68,26 @@ resource "aws_iam_role" "app_instance" {
   ]
 }
 EOF
+
 }
 
-
-
 data "template_file" "instance_profile" {
-  template = "${file("${path.module}/templates/instance-profile-policy.json")}"
+  template = file("${path.module}/templates/instance-profile-policy.json")
 
-  vars {
-    app_log_group_arn = "${aws_cloudwatch_log_group.app.arn}"
+  vars = {
+    app_log_group_arn = aws_cloudwatch_log_group.app.arn
   }
 }
 
 resource "aws_iam_role_policy" "instance" {
   name   = "TfEcsExampleInstanceRole"
-  role   = "${aws_iam_role.app_instance.name}"
-  policy = "${data.template_file.instance_profile.rendered}"
+  role   = aws_iam_role.app_instance.name
+  policy = data.template_file.instance_profile.rendered
 }
 
 resource "aws_iam_policy_attachment" "proxy" {
-    name = "TfEcsExampleInstanceRoleAttachment"
-  roles   = ["${aws_iam_role.app_instance.name}"]
+  name       = "TfEcsExampleInstanceRoleAttachment"
+  roles      = [aws_iam_role.app_instance.name]
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
+

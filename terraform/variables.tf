@@ -38,5 +38,6 @@ variable "admin_cidr_ingress" {
 
 variable "redis_cluster_count" {
   description = "to enable/disable redis since creation is slow"
-  default = "0"
+  default     = "0"
 }
+

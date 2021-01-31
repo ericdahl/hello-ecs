@@ -5,3 +5,5 @@ target/
 *.tfstate
 *.tfstate.backup
 *.tfvars
+.terraform.lock.hcl
+.terraform/
