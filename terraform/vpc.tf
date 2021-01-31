@@ -6,21 +6,21 @@ data "aws_availability_zones" "available" {
 }
 
 resource "aws_vpc" "main" {
-  cidr_block = "10.10.0.0/16"
+  cidr_block = "10.0.0.0/16"
 
   tags = {
-    Name = "terraform"
+    Name = var.name
   }
 }
 
-resource "aws_subnet" "main" {
+resource "aws_subnet" "public" {
   count             = var.az_count
   cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, count.index)
   availability_zone = data.aws_availability_zones.available.names[count.index]
   vpc_id            = aws_vpc.main.id
 
   tags = {
-    Name = "tf-main"
+    Name = var.name
   }
 }
 
@@ -39,6 +39,6 @@ resource "aws_route_table" "r" {
 
 resource "aws_route_table_association" "a" {
   count          = var.az_count
-  subnet_id      = element(aws_subnet.main.*.id, count.index)
+  subnet_id      = element(aws_subnet.public.*.id, count.index)
   route_table_id = aws_route_table.r.id
 }

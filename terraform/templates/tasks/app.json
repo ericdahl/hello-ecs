@@ -1,24 +1,17 @@
 [
   {
     "essential": true,
-    "image": "${image_url}",
+    "image": "ericdahl/hello-ecs:54601b2",
     "memory": 256,
-    "name": "${container_name}",
+    "name": "hello-ecs",
     "portMappings": [
       {
         "containerPort": 8080,
-        "hostPort": 0
+        "hostPort": 8080
       }
     ],
     "environment" : [
       { "name" : "SPRING_REDIS_HOST", "value" : "${redis_host}" }
-    ],
-    "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-            "awslogs-group": "${log_group_name}",
-            "awslogs-region": "${log_group_region}"
-        }
-    }
+    ]
   }
 ]

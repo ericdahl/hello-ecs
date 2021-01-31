@@ -9,7 +9,7 @@ Demo using
 - spring-boot web app
     - connected to ElastiCache
 
-It also creates the base infrastructure (VPC, IAM) so that it's completely self contained. If you
+It also creates the base infrastructure (VPC, IAM) so that it's completely self-contained. If you
 already have these things, you could remove that config.
 
 This is a **basic example**. If you're interested in more comprehensive ECS customization, including:

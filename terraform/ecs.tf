@@ -1,41 +1,60 @@
-resource "aws_ecs_cluster" "main" {
-  name = "terraform_example_ecs_cluster"
+resource "aws_ecs_cluster" "default" {
+  name = var.name
 }
 
-data "template_file" "task_definition" {
-  template = file("${path.module}/templates/tasks/app.json")
+resource "aws_ecs_task_definition" "default" {
+  family                = var.name
+  container_definitions = file("${path.module}/templates/tasks/app.json")
 
-  vars = {
-    image_url        = "689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:20170508-0405-c7d56e7"
-    container_name   = "nginx"
-    log_group_region = var.aws_region
-    log_group_name   = aws_cloudwatch_log_group.app.name
-    //    redis_host       = "${aws_elasticache_cluster.default.cache_nodes.0.address}"
-    redis_host = "localhost"
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = 256
+  memory                   = 512
+}
+
+resource "aws_ecs_service" "default" {
+  name            = var.name
+  cluster         = aws_ecs_cluster.default.name
+  task_definition = aws_ecs_task_definition.default.arn
+  desired_count   = 1
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets = aws_subnet.public.*.id
+
+    security_groups = [
+      aws_security_group.ecs_task.id
+    ]
+    assign_public_ip = true # not ideal, but to help avoid paying for a NAT gateway
   }
-}
 
-resource "aws_ecs_task_definition" "nginx" {
-  family                = "tf_example_nginx_td"
-  container_definitions = data.template_file.task_definition.rendered
-}
-
-resource "aws_ecs_service" "test" {
-  name            = "tf-example-ecs-nginx"
-  cluster         = aws_ecs_cluster.main.id
-  task_definition = aws_ecs_task_definition.nginx.arn
-  desired_count   = 2
-  iam_role        = aws_iam_role.ecs_service.name
+  depends_on = [aws_alb.default]
 
   load_balancer {
-    target_group_arn = aws_alb_target_group.test.id
-    container_name   = "nginx"
-    container_port   = "8080"
+    target_group_arn = aws_alb_target_group.default.arn
+    container_name   = "hello-ecs"
+    container_port   = 8080
+  }
+}
+
+resource "aws_security_group" "ecs_task" {
+
+  name   = "${var.name}-ecs-task"
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    from_port       = 8080
+    protocol        = "tcp"
+    to_port         = 8080
+    security_groups = [aws_security_group.alb.id]
+    description     = "allows ALB to make requests to ECS Task"
   }
 
-  depends_on = [
-    aws_iam_role_policy.ecs_service,
-    aws_alb_listener.front_end,
-  ]
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 

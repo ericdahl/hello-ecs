@@ -1,6 +1,6 @@
 resource "aws_elasticache_cluster" "default" {
   count              = var.redis_cluster_count
-  cluster_id         = "tf-example-cluster"
+  cluster_id         = var.name
   engine             = "redis"
   node_type          = "cache.t2.micro"
   port               = 6379
@@ -12,14 +12,14 @@ resource "aws_elasticache_cluster" "default" {
 resource "aws_elasticache_subnet_group" "default" {
   count      = var.redis_cluster_count
   name       = "tf-test-cache-subnet"
-  subnet_ids = aws_subnet.main.*.id
+  subnet_ids = aws_subnet.public.*.id
 }
 
 resource "aws_security_group" "elasticache_sg" {
   count       = var.redis_cluster_count
   description = "allow redis from instances"
   vpc_id      = aws_vpc.main.id
-  name        = "elasticache_sg"
+  name        = "${var.name}-elasticache"
 
   ingress {
     from_port = 6379
@@ -27,15 +27,9 @@ resource "aws_security_group" "elasticache_sg" {
     protocol  = "tcp"
 
     security_groups = [
-      aws_security_group.instance_sg.id,
+      aws_security_group.ecs_task.id
     ]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    description = "allows ECS Task to make connections to redis"
   }
 }
 

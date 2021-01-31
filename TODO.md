@@ -1,11 +1,7 @@
+- update app code to current spring-boot
+- re-enable redis
 - monitoring
     - ecs-agent logs to cloudwatch
-- deploy pipeline (jenkins?)
-- other ecs service (?)
-- test deploy strategies
-- configure elb health monitor times
 - smaller docker image
-- consolidate variables
-    - ECR URL
 - ability to toggle redis
     - workaround issue of undefined var for ecs env var when disabled

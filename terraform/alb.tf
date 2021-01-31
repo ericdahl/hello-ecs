@@ -1,32 +1,35 @@
-resource "aws_alb_target_group" "test" {
-  name     = "tf-example-ecs-nginx"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
+resource "aws_alb_target_group" "default" {
+  name        = var.name
+  port        = 8080
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.main.id
+  target_type = "ip"
+
+  deregistration_delay = 0
 }
 
-resource "aws_alb" "main" {
-  name            = "tf-example-alb-ecs"
-  subnets         = aws_subnet.main.*.id
-  security_groups = [aws_security_group.lb_sg.id]
+resource "aws_alb" "default" {
+  name            = var.name
+  subnets         = aws_subnet.public.*.id
+  security_groups = [aws_security_group.alb.id]
 }
 
-resource "aws_alb_listener" "front_end" {
-  load_balancer_arn = aws_alb.main.id
+resource "aws_alb_listener" "default" {
+  load_balancer_arn = aws_alb.default.id
   port              = "80"
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_alb_target_group.test.id
+    target_group_arn = aws_alb_target_group.default.id
     type             = "forward"
   }
 }
 
-resource "aws_security_group" "lb_sg" {
+resource "aws_security_group" "alb" {
   description = "controls access to the application ELB"
 
   vpc_id = aws_vpc.main.id
-  name   = "tf-ecs-lbsg"
+  name   = "${var.name}-alb"
 
   ingress {
     protocol    = "tcp"
