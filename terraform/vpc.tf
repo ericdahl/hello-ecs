@@ -11,6 +11,8 @@ resource "aws_vpc" "main" {
   tags = {
     Name = var.name
   }
+
+
 }
 
 resource "aws_subnet" "public" {
@@ -22,6 +24,7 @@ resource "aws_subnet" "public" {
   tags = {
     Name = var.name
   }
+  map_public_ip_on_launch = true
 }
 
 resource "aws_internet_gateway" "gw" {

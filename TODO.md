@@ -1,7 +1,3 @@
 - update app code to current spring-boot
-- re-enable redis
-- monitoring
-    - ecs-agent logs to cloudwatch
+- fix warnings/logs
 - smaller docker image
-- ability to toggle redis
-    - workaround issue of undefined var for ecs env var when disabled

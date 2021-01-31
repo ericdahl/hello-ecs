@@ -1,6 +1,5 @@
 [
   {
-    "essential": true,
     "image": "ericdahl/hello-ecs:54601b2",
     "memory": 256,
     "name": "hello-ecs",
@@ -10,8 +9,19 @@
         "hostPort": 8080
       }
     ],
-    "environment" : [
-      { "name" : "SPRING_REDIS_HOST", "value" : "${redis_host}" }
-    ]
+    "environment": [
+      {
+        "name": "SPRING_REDIS_HOST",
+        "value": "${redis_host}"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/hello-ecs/app",
+        "awslogs-region": "us-west-2",
+        "awslogs-stream-prefix": "hello-ecs"
+      }
+    }
   }
 ]
