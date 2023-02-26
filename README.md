@@ -12,6 +12,10 @@ Demo using
 It also creates the base infrastructure (VPC, IAM) so that it's completely self-contained. If you
 already have these things, you could remove that config.
 
+This is not meant for production. For speed of deployments and lower costs, resources are deployed
+into public subnets. Security Groups are in place to lock down access, but ideally the resources
+are deployed into private subnets with a NAT Gateway
+
 This is a **basic example**. If you're interested in more comprehensive ECS customization, including:
 - spot instances
 - automatic draining of containers

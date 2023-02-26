@@ -1,6 +1,4 @@
-resource "aws_ecs_cluster" "default" {
-  name = var.name
-}
+
 
 resource "aws_ecs_task_definition" "default" {
   family                = var.name
@@ -59,50 +57,8 @@ resource "aws_security_group" "ecs_task" {
   }
 }
 
-
-resource "aws_iam_role" "ecs_task_execution" {
-  name = "ecs-task-execution"
-
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
+resource "aws_cloudwatch_log_group" "app" {
+  name              = "/hello-ecs/app"
+  retention_in_days = 3
 }
 
-resource "aws_iam_policy" "ecs_task_execution" {
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ecr:GetAuthorizationToken",
-        "ecr:BatchCheckLayerAvailability",
-        "ecr:GetDownloadUrlForLayer",
-        "ecr:BatchGetImage",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-EOF
-}
-
-resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
-  role       = aws_iam_role.ecs_task_execution.name
-  policy_arn = aws_iam_policy.ecs_task_execution.arn
-}

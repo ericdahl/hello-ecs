@@ -16,16 +16,27 @@ resource "aws_elasticache_subnet_group" "default" {
 resource "aws_security_group" "elasticache_sg" {
   vpc_id = aws_vpc.main.id
   name   = "${var.name}-elasticache"
+}
 
-  ingress {
-    from_port = 6379
-    to_port   = 6379
-    protocol  = "tcp"
+resource "aws_security_group_rule" "elasticache_ingresss_ecs" {
+  security_group_id = aws_security_group.elasticache_sg.id
 
-    security_groups = [
-      aws_security_group.ecs_task.id
-    ]
-    description = "allows ECS Task to make connections to redis"
-  }
+  type              = "ingress"
+  protocol          = "tcp"
+  from_port         = 6379
+  to_port           = 6379
+
+  source_security_group_id = aws_security_group.ecs_task.id
+  description = "allows ECS Task to make connections to redis"
+}
+
+resource "aws_security_group_rule" "elasticache_ingress_admin" {
+  security_group_id = aws_security_group.ecs_task.id
+
+  from_port         = 6379
+  protocol          = "tcp"
+  to_port           = 6379
+  type              = "ingress"
+  cidr_blocks = [var.admin_cidr_ingress]
 }
 

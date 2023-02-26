@@ -5,3 +5,7 @@ output "alb_hostname" {
 output "vpc_subnets" {
   value = [aws_subnet.public.*.cidr_block]
 }
+
+output "elasticache" {
+  value = aws_elasticache_cluster.default.
+}
