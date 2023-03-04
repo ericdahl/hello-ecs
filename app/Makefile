@@ -1,20 +1,16 @@
-C = `date "+%Y%m%d-%H%M"`-`git rev-parse --short HEAD`
+# TODO: fix date logic; avoid regen
+#TAG = `date "+%Y%m%d-%H%M"`-`git rev-parse --short HEAD`
+TAG = `git rev-parse --short HEAD`
 
-compile:
-	mvn package
-
-login:
-	`aws ecr get-login --region us-west-2`
-
-build: compile login
-	docker build -t hello-ecs:$(C) .
-	docker tag hello-ecs:$(C) hello-ecs:latest
-	docker tag hello-ecs:$(C) 689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:$(C)
-	echo "Built hello-ecs:$(C)"
+build:
+	docker build -t hello-ecs:$(TAG) .
+	docker tag hello-ecs:$(TAG) ericdahl/hello-ecs:latest
+	docker tag hello-ecs:$(TAG) ericdahl/hello-ecs:$(TAG)
+	echo "Built hello-ecs:$(TAG)"
 
 deploy: build
-	docker push 689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:$(C)
-	echo "Pushed 689973912904.dkr.ecr.us-west-2.amazonaws.com/hello-ecs:$(C)"
+	docker push ericdahl/hello-ecs:$(TAG)
+	echo "Pushed ericdahl/dockhello-ecs:$(TAG)"
 
 test:
 	echo $(C)
