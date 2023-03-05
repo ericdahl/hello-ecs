@@ -10,7 +10,7 @@ build:
 
 deploy: build
 	docker push ericdahl/hello-ecs:$(TAG)
-	echo "Pushed ericdahl/dockhello-ecs:$(TAG)"
+	echo "Pushed ericdahl/hello-ecs:$(TAG)"
 
 test:
 	echo $(C)
