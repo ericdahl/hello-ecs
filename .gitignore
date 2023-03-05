@@ -2,8 +2,7 @@ target/
 *.iml
 \.idea
 
-*.tfstate
-*.tfstate.backup
+*.tfstate*
 *.tfvars
 .terraform.lock.hcl
 .terraform/
