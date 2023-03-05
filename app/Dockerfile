@@ -1,11 +1,12 @@
 FROM maven:3.9.0-amazoncorretto-8 as builder
 
-ADD . /module
 WORKDIR /module
 
-# TODO: cache dependencies in intermediate layer
-RUN mvn dependency:resolve
-RUN mvn package
+# try to leverage docker cache for faster builds (doesn't work great with maven)
+COPY pom.xml .
+RUN mvn -B -s /usr/share/maven/ref/settings-docker.xml dependency:resolve-plugins dependency:go-offline
+COPY . .
+RUN mvn -B -s /usr/share/maven/ref/settings-docker.xml -Dspring-boot.repackage.skip=true clean package
 
 FROM amazoncorretto:8
 
