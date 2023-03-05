@@ -14,5 +14,3 @@ COPY --from=builder /module/target/app-1.0-SNAPSHOT.jar /app.jar
 
 ENV JAVA_OPTS="-Xms128m -Xmx128m -server"
 CMD [ "sh", "-c", "java $JAVA_OPTS -jar /app.jar" ]
-
-HEALTHCHECK --timeout=3s --start-period=120s CMD curl -f http://localhost:8080 || exit 1

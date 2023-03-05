@@ -22,6 +22,10 @@
         "awslogs-region": "us-west-2",
         "awslogs-stream-prefix": "hello-ecs"
       }
+    },
+    "healthCheck": {
+      "startPeriod": 120,
+      "command":  [ "CMD-SHELL", "curl -f http://localhost:8080 || exit 1" ]
     }
   }
 ]
