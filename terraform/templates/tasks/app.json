@@ -1,6 +1,6 @@
 [
   {
-    "image": "ericdahl/hello-ecs:54601b2",
+    "image": "ericdahl/hello-ecs:ca66568",
     "memory": 512,
     "name": "hello-ecs",
     "portMappings": [
