@@ -46,20 +46,33 @@ resource "aws_security_group" "ecs_task" {
   name   = "${var.name}-ecs-task"
   vpc_id = aws_vpc.main.id
 
-  ingress {
-    from_port       = 8080
-    protocol        = "tcp"
-    to_port         = 8080
-    security_groups = [aws_security_group.alb.id]
-    description     = "allows ALB to make requests to ECS Task"
-  }
+}
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+resource "aws_security_group_rule" "ecs_task_ingress_alb" {
+  security_group_id = aws_security_group.ecs_task.id
+
+  type = "ingress"
+  from_port       = 8080
+  protocol        = "tcp"
+  to_port         = 8080
+
+  source_security_group_id = aws_security_group.alb.id
+
+  description     = "allows ALB to make requests to ECS Task"
+}
+
+# TODO lock this down more
+resource "aws_security_group_rule" "ecs_task_egress_all" {
+  security_group_id = aws_security_group.ecs_task.id
+
+  type = "egress"
+
+  from_port   = 0
+  to_port     = 0
+  protocol    = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
+
+  description     = "allows ECS task to make egress calls"
 }
 
 resource "aws_cloudwatch_log_group" "app" {
