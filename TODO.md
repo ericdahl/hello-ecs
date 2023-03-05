@@ -3,4 +3,4 @@
 - fix warnings/logs
 - smaller docker image
 - fix docker image caching
-- use tf to manage ECR?
+- re-add hystrix?

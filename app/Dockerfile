@@ -1,14 +1,11 @@
-FROM maven:3.9.0-amazoncorretto-8 as builder
+FROM maven:3.9.0-amazoncorretto-19 as builder
 
 WORKDIR /module
 
-# try to leverage docker cache for faster builds (doesn't work great with maven)
-COPY pom.xml .
-RUN mvn -B -s /usr/share/maven/ref/settings-docker.xml dependency:resolve-plugins dependency:go-offline
 COPY . .
-RUN mvn -B -s /usr/share/maven/ref/settings-docker.xml -Dspring-boot.repackage.skip=true clean package
+RUN mvn clean package
 
-FROM amazoncorretto:8
+FROM amazoncorretto:19
 
 COPY --from=builder /module/target/app-1.0-SNAPSHOT.jar /app.jar
 
