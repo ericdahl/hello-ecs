@@ -3,7 +3,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Name = "hello-ecs"
+      Name       = "hello-ecs"
       Repository = "https://github.com/ericdahl/hello-ecs"
     }
   }
