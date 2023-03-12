@@ -59,7 +59,6 @@ resource "aws_security_group_rule" "ecs_task_ingress_alb" {
   description = "allows ALB to make requests to ECS Task"
 }
 
-# TODO lock this down more
 resource "aws_security_group_rule" "ecs_task_egress_all" {
   security_group_id = aws_security_group.ecs_task.id
 
@@ -68,8 +67,8 @@ resource "aws_security_group_rule" "ecs_task_egress_all" {
   from_port   = 0
   to_port     = 0
   protocol    = "-1"
-  cidr_blocks = ["0.0.0.0/0"]
 
+  source_security_group_id = aws_security_group.elasticache_sg.id
   description = "allows ECS task to make egress calls"
 }
 
