@@ -1,5 +1,5 @@
 resource "aws_elasticache_cluster" "default" {
-  cluster_id         = var.name
+  cluster_id         = local.name
   engine             = "redis"
   node_type          = "cache.t3.micro"
   port               = 6379
@@ -37,6 +37,8 @@ resource "aws_security_group_rule" "elasticache_ingress_admin" {
   protocol          = "tcp"
   to_port           = 6379
   type              = "ingress"
+
   cidr_blocks = [var.admin_cidr_ingress]
+  description = "allows admin to connect to redis"
 }
 

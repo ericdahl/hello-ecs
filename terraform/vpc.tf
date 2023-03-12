@@ -1,18 +1,7 @@
-provider "aws" {
-  region = var.aws_region
-}
-
-data "aws_availability_zones" "available" {
-}
+data "aws_availability_zones" "available" {}
 
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
-
-  tags = {
-    Name = var.name
-  }
-
-
 }
 
 resource "aws_subnet" "public" {
@@ -21,9 +10,6 @@ resource "aws_subnet" "public" {
   availability_zone = data.aws_availability_zones.available.names[count.index]
   vpc_id            = aws_vpc.main.id
 
-  tags = {
-    Name = var.name
-  }
   map_public_ip_on_launch = true
 }
 
