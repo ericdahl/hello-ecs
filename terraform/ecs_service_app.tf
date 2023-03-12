@@ -1,7 +1,7 @@
 
 
 resource "aws_ecs_task_definition" "default" {
-  family                = var.name
+  family                = local.name
   container_definitions = templatefile("${path.module}/templates/tasks/app.json", { redis_host = aws_elasticache_cluster.default.cache_nodes[0].address })
 
   requires_compatibilities = ["FARGATE"]
@@ -12,7 +12,7 @@ resource "aws_ecs_task_definition" "default" {
 }
 
 resource "aws_ecs_service" "default" {
-  name            = var.name
+  name            = local.name
   cluster         = aws_ecs_cluster.default.name
   task_definition = aws_ecs_task_definition.default.arn
   desired_count   = 1
@@ -42,10 +42,8 @@ resource "aws_ecs_service" "default" {
 }
 
 resource "aws_security_group" "ecs_task" {
-
-  name   = "${var.name}-ecs-task"
+  name   = "${local.name}-ecs-task"
   vpc_id = aws_vpc.main.id
-
 }
 
 resource "aws_security_group_rule" "ecs_task_ingress_alb" {

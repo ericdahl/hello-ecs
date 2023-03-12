@@ -1,5 +1,5 @@
 resource "aws_alb_target_group" "default" {
-  name        = var.name
+  name        = local.name
   port        = 8080
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
@@ -9,7 +9,7 @@ resource "aws_alb_target_group" "default" {
 }
 
 resource "aws_alb" "default" {
-  name            = var.name
+  name            = local.name
   subnets         = aws_subnet.public.*.id
   security_groups = [aws_security_group.alb.id]
 }
@@ -29,7 +29,7 @@ resource "aws_security_group" "alb" {
   description = "controls access to the application ELB"
 
   vpc_id = aws_vpc.main.id
-  name   = "${var.name}-alb"
+  name   = "${local.name}-alb"
 
   ingress {
     protocol    = "tcp"

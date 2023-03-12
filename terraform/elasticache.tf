@@ -11,13 +11,13 @@ resource "aws_elasticache_cluster" "default" {
 }
 
 resource "aws_elasticache_subnet_group" "default" {
-  name       = var.name
+  name       = local.name
   subnet_ids = aws_subnet.public.*.id
 }
 
 resource "aws_security_group" "elasticache_sg" {
   vpc_id = aws_vpc.main.id
-  name   = "${var.name}-elasticache"
+  name   = "${local.name}-elasticache"
 }
 
 resource "aws_security_group_rule" "elasticache_ingresss_ecs" {
