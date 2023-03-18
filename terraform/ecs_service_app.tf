@@ -68,7 +68,7 @@ resource "aws_security_group_rule" "ecs_task_egress_all" {
   to_port     = 0
   protocol    = "-1"
 
-  source_security_group_id = aws_security_group.elasticache_sg.id
+  cidr_blocks = ["0.0.0.0/0"]
   description = "allows ECS task to make egress calls"
 }
 
