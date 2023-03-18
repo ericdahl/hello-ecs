@@ -76,4 +76,27 @@ resource "aws_cloudwatch_log_group" "app" {
   name              = "/hello-ecs/app"
   retention_in_days = 3
 }
+resource "aws_appautoscaling_target" "app" {
+  max_capacity       = 3
+  min_capacity       = 1
+  resource_id        = "service/${aws_ecs_cluster.default.name}/${aws_ecs_service.default.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+}
 
+resource "aws_appautoscaling_policy" "app" {
+  name               = "app"
+  resource_id        = aws_appautoscaling_target.app.resource_id
+  scalable_dimension = aws_appautoscaling_target.app.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.app.service_namespace
+
+  policy_type = "TargetTrackingScaling"
+  target_tracking_scaling_policy_configuration {
+    target_value = 25
+
+    predefined_metric_specification {
+      predefined_metric_type = "ALBRequestCountPerTarget"
+      resource_label = "${aws_alb.default.arn_suffix}/${aws_alb_target_group.default.arn_suffix}"
+    }
+  }
+}
