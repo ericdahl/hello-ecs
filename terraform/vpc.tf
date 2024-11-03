@@ -4,6 +4,7 @@ resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
 }
 
+# just using a public subnet here to avoid costs of private subnet (NAT GW)
 resource "aws_subnet" "public" {
   count             = var.az_count
   cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, count.index)

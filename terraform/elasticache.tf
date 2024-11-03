@@ -2,7 +2,6 @@ resource "aws_elasticache_cluster" "default" {
   cluster_id         = local.name
   engine             = "redis"
   node_type          = "cache.t4g.micro"
-  port               = 6379
   num_cache_nodes    = 1
   subnet_group_name  = aws_elasticache_subnet_group.default.name
   security_group_ids = [aws_security_group.elasticache_sg.id]

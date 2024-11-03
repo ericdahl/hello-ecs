@@ -1,5 +1,3 @@
-
-
 resource "aws_ecs_task_definition" "default" {
   family                = local.name
   container_definitions = templatefile("${path.module}/templates/tasks/app.json", { redis_host = aws_elasticache_cluster.default.cache_nodes[0].address })
@@ -64,9 +62,9 @@ resource "aws_security_group_rule" "ecs_task_egress_all" {
 
   type = "egress"
 
-  from_port   = 0
-  to_port     = 0
-  protocol    = "-1"
+  from_port = 0
+  to_port   = 0
+  protocol  = "-1"
 
   cidr_blocks = ["0.0.0.0/0"]
   description = "allows ECS task to make egress calls"
@@ -76,6 +74,7 @@ resource "aws_cloudwatch_log_group" "app" {
   name              = "/hello-ecs/app"
   retention_in_days = 3
 }
+
 resource "aws_appautoscaling_target" "app" {
   max_capacity       = 3
   min_capacity       = 1
@@ -96,7 +95,7 @@ resource "aws_appautoscaling_policy" "app" {
 
     predefined_metric_specification {
       predefined_metric_type = "ALBRequestCountPerTarget"
-      resource_label = "${aws_alb.default.arn_suffix}/${aws_alb_target_group.default.arn_suffix}"
+      resource_label         = "${aws_alb.default.arn_suffix}/${aws_alb_target_group.default.arn_suffix}"
     }
   }
 }

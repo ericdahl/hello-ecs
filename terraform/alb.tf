@@ -26,26 +26,25 @@ resource "aws_alb_listener" "default" {
 }
 
 resource "aws_security_group" "alb" {
-  description = "controls access to the application ELB"
-
   vpc_id = aws_vpc.main.id
   name   = "${local.name}-alb"
-
-  ingress {
-    protocol    = "tcp"
-    from_port   = 80
-    to_port     = 80
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port = 0
-    to_port   = 0
-    protocol  = "-1"
-
-    cidr_blocks = [
-      "0.0.0.0/0",
-    ]
-  }
 }
 
+resource "aws_security_group_rule" "alb_ingress_http_all" {
+  from_port         = 80
+  protocol          = "tcp"
+  security_group_id = aws_security_group.alb.id
+  to_port           = 80
+  type              = "ingress"
+
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "alb_egress_all" {
+  security_group_id        = aws_security_group.alb.id
+  from_port                = 0
+  protocol                 = "-1"
+  to_port                  = 0
+  type                     = "egress"
+  source_security_group_id = aws_security_group.ecs_task.id
+}
