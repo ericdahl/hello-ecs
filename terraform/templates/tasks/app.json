@@ -1,6 +1,6 @@
 [
   {
-    "image": "ericdahl/hello-ecs:6770354",
+    "image": "ericdahl/hello-ecs:7f152d1",
     "name": "hello-ecs",
     "portMappings": [
       {

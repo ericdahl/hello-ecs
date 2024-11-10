@@ -1,11 +1,11 @@
-FROM maven:3.9.0-amazoncorretto-19 as builder
+FROM maven:3.9.9-amazoncorretto-23 as builder
 
 WORKDIR /module
 
 COPY . .
 RUN mvn clean package
 
-FROM amazoncorretto:19
+FROM amazoncorretto:23
 
 COPY --from=builder /module/target/app-1.0-SNAPSHOT.jar /app.jar
 
