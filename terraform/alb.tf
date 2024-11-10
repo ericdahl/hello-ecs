@@ -31,20 +31,23 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_security_group_rule" "alb_ingress_http_all" {
-  from_port         = 80
-  protocol          = "tcp"
   security_group_id = aws_security_group.alb.id
-  to_port           = 80
-  type              = "ingress"
+
+  type      = "ingress"
+  protocol  = "tcp"
+  from_port = 80
+  to_port   = 80
 
   cidr_blocks = ["0.0.0.0/0"]
 }
 
-resource "aws_security_group_rule" "alb_egress_all" {
-  security_group_id        = aws_security_group.alb.id
-  from_port                = 0
-  protocol                 = "-1"
-  to_port                  = 0
-  type                     = "egress"
+resource "aws_security_group_rule" "alb_egress_http_app" {
+  security_group_id = aws_security_group.alb.id
+
+  type      = "egress"
+  protocol  = "tcp"
+  from_port = 8080
+  to_port   = 8080
+
   source_security_group_id = aws_security_group.ecs_task.id
 }

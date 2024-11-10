@@ -1,6 +1,9 @@
 resource "aws_ecs_task_definition" "default" {
-  family                = local.name
-  container_definitions = templatefile("${path.module}/templates/tasks/app.json", { redis_host = aws_elasticache_cluster.default.cache_nodes[0].address })
+  family = local.name
+  container_definitions = templatefile("${path.module}/templates/tasks/app.json", {
+    redis_host   = aws_elasticache_cluster.default.cache_nodes[0].address,
+    cw_log_group = aws_cloudwatch_log_group.app.name
+  })
 
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
@@ -48,8 +51,8 @@ resource "aws_security_group_rule" "ecs_task_ingress_alb" {
   security_group_id = aws_security_group.ecs_task.id
 
   type      = "ingress"
-  from_port = 8080
   protocol  = "tcp"
+  from_port = 8080
   to_port   = 8080
 
   source_security_group_id = aws_security_group.alb.id
@@ -57,14 +60,29 @@ resource "aws_security_group_rule" "ecs_task_ingress_alb" {
   description = "allows ALB to make requests to ECS Task"
 }
 
+resource "aws_security_group_rule" "ecs_task_ingress_admin" {
+  security_group_id = aws_security_group.ecs_task.id
+
+  type      = "ingress"
+  protocol  = "tcp"
+  from_port = 8080
+  to_port   = 8080
+
+  cidr_blocks = [var.admin_cidr_ingress]
+
+  description = "allow connections to ECS tasks from admin cidr for debugging"
+}
+
+
+
 resource "aws_security_group_rule" "ecs_task_egress_all" {
   security_group_id = aws_security_group.ecs_task.id
 
-  type = "egress"
+  type     = "egress"
+  protocol = "-1"
 
   from_port = 0
   to_port   = 0
-  protocol  = "-1"
 
   cidr_blocks = ["0.0.0.0/0"]
   description = "allows ECS task to make egress calls"
