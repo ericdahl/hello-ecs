@@ -30,24 +30,18 @@ resource "aws_security_group" "alb" {
   name   = "${local.name}-alb"
 }
 
-resource "aws_security_group_rule" "alb_ingress_http_all" {
+resource "aws_vpc_security_group_ingress_rule" "alb_ingress_http_all" {
   security_group_id = aws_security_group.alb.id
-
-  type      = "ingress"
-  protocol  = "tcp"
-  from_port = 80
-  to_port   = 80
-
-  cidr_blocks = ["0.0.0.0/0"]
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 80
+  ip_protocol       = "tcp"
+  to_port           = 80
 }
 
-resource "aws_security_group_rule" "alb_egress_http_app" {
-  security_group_id = aws_security_group.alb.id
-
-  type      = "egress"
-  protocol  = "tcp"
-  from_port = 8080
-  to_port   = 8080
-
-  source_security_group_id = aws_security_group.ecs_task.id
+resource "aws_vpc_security_group_egress_rule" "alb_egress_http_app" {
+  security_group_id            = aws_security_group.alb.id
+  referenced_security_group_id = aws_security_group.ecs_task.id
+  from_port                    = 8080
+  ip_protocol                  = "tcp"
+  to_port                      = 8080
 }
