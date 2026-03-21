@@ -18,14 +18,13 @@ data "aws_iam_policy_document" "ecs_assume_role_policy" {
 data "aws_iam_policy_document" "ecs_task_execution_policy" {
   statement {
     actions = [
-      "ecr:GetAuthorizationToken",
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
       "logs:CreateLogStream",
       "logs:PutLogEvents"
     ]
-    resources = ["*"]
+
+    resources = [
+      "${aws_cloudwatch_log_group.app.arn}:*"
+    ]
   }
 }
 
