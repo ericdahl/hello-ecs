@@ -47,45 +47,29 @@ resource "aws_security_group" "ecs_task" {
   vpc_id = aws_vpc.main.id
 }
 
-resource "aws_security_group_rule" "ecs_task_ingress_alb" {
-  security_group_id = aws_security_group.ecs_task.id
-
-  type      = "ingress"
-  protocol  = "tcp"
-  from_port = 8080
-  to_port   = 8080
-
-  source_security_group_id = aws_security_group.alb.id
-
-  description = "allows ALB to make requests to ECS Task"
+resource "aws_vpc_security_group_ingress_rule" "ecs_task_ingress_alb" {
+  security_group_id            = aws_security_group.ecs_task.id
+  referenced_security_group_id = aws_security_group.alb.id
+  from_port                    = 8080
+  to_port                      = 8080
+  ip_protocol                  = "tcp"
+  description                  = "allows ALB to make requests to ECS Task"
 }
 
-resource "aws_security_group_rule" "ecs_task_ingress_admin" {
+resource "aws_vpc_security_group_ingress_rule" "ecs_task_ingress_admin" {
   security_group_id = aws_security_group.ecs_task.id
-
-  type      = "ingress"
-  protocol  = "tcp"
-  from_port = 8080
-  to_port   = 8080
-
-  cidr_blocks = [var.admin_cidr_ingress]
-
-  description = "allow connections to ECS tasks from admin cidr for debugging"
+  cidr_ipv4         = var.admin_cidr_ingress
+  from_port         = 8080
+  to_port           = 8080
+  ip_protocol       = "tcp"
+  description       = "allow connections to ECS tasks from admin cidr for debugging"
 }
 
-
-
-resource "aws_security_group_rule" "ecs_task_egress_all" {
+resource "aws_vpc_security_group_egress_rule" "ecs_task_egress_all" {
   security_group_id = aws_security_group.ecs_task.id
-
-  type     = "egress"
-  protocol = "-1"
-
-  from_port = 0
-  to_port   = 0
-
-  cidr_blocks = ["0.0.0.0/0"]
-  description = "allows ECS task to make egress calls"
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
+  description       = "allows ECS task to make egress calls"
 }
 
 resource "aws_cloudwatch_log_group" "app" {
