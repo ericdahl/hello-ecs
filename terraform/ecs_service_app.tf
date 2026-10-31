@@ -73,7 +73,7 @@ resource "aws_vpc_security_group_egress_rule" "ecs_task_egress_all" {
 }
 
 resource "aws_cloudwatch_log_group" "app" {
-  name              = "/hello-ecs/app"
+  name              = "/${local.name}/app"
   retention_in_days = 3
 }
 
