@@ -76,6 +76,14 @@ cd app
 mvn clean package
 ```
 
+### Run tests
+
+```bash
+cd app
+mvn test     # unit tests only (no Docker needed; also run during the Docker image build)
+mvn verify   # also runs *IT integration tests against a real Redis via Testcontainers (needs Docker)
+```
+
 ### Run locally
 
 You can also run the packaged app locally:
