@@ -2,8 +2,12 @@ FROM maven:3.9.11-amazoncorretto-25 as builder
 
 WORKDIR /module
 
-COPY . .
-RUN mvn clean package
+# resolve dependencies in their own layer so source-only changes reuse the cache
+COPY pom.xml .
+RUN mvn -B dependency:go-offline
+
+COPY src ./src
+RUN mvn -B clean package
 
 FROM amazoncorretto:25
 
