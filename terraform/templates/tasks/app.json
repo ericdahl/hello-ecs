@@ -10,7 +10,7 @@
     ],
     "environment": [
       {
-        "name": "SPRING_REDIS_HOST",
+        "name": "SPRING_DATA_REDIS_HOST",
         "value": "${redis_host}"
       }
     ],
