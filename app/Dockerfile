@@ -1,4 +1,4 @@
-FROM maven:3.9.11-amazoncorretto-25 as builder
+FROM maven:3.9.11-amazoncorretto-25 AS builder
 
 WORKDIR /module
 
